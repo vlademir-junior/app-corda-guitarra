@@ -40,10 +40,18 @@ output:focus {
   background-color: #7B5E57;
 }
 
-header,
-main {
+header {
   background-color: #5D4037;
-  border-radius: 20px;
+  border-radius: 30px;
+  border: 1px solid #3E2723;
+  margin: 20px 0;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+main{
+  background-color: #5D4037;
+  border-radius: 10px;
   border: 1px solid #3E2723;
   margin: 20px 0;
   padding: 20px;
