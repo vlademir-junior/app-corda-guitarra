@@ -1,0 +1,96 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 20px;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 60px;
+  color: #c3aca3;
+}
+
+h2 {
+  text-align: center;
+  font-size: 40px;
+  color: #F5ECE6;
+}
+
+span {
+  text-align: center;
+  font-size: 45px;
+  color: #ffffff;
+}
+
+input,
+output {
+  color: #F5ECE6;
+  background-color: #3E2723;
+  border: none;
+  border-radius: 30px;
+  font-size: 30px;
+  padding: 10px 20px;
+  width: 120px;
+  transition: background-color 0.3s ease;
+}
+
+input:focus,
+output:focus {
+  outline: none;
+  background-color: #7B5E57;
+}
+
+header,
+main {
+  background-color: #5D4037;
+  border-radius: 20px;
+  border: 1px solid #3E2723;
+  margin: 20px 0;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+footer {
+  text-align: center;
+  font-size: 24px;
+  color: #F5ECE6;
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #3a2617;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+#darkModeButton {
+  background-color: #333;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode #darkModeButton {
+  background-color: #fff;
+  color: #333;
+}
+
+@keyframes pulse {
+      0% {
+        transform: scale(0.9);
+      }
+
+      50% {
+        transform: scale(1);
+      }
+
+      100% {
+        transform: scale(0.9);
+      }
+    }
