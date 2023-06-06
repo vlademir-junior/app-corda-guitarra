@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var entryData = document.getElementById('entryData');
-  var gtrStringOutput = document.getElementById('gtrString');
-  var darkModeButton = document.getElementById('darkModeButton');
-  var rootElement = document.documentElement;
-  
+  const entryData = document.getElementById('entryData');
+  const gtrStringOutput = document.getElementById('gtrString');
+  const darkModeButton = document.getElementById('darkModeButton');
+  const rootElement = document.documentElement;
+
   entryData.addEventListener('input', function () {
-    var gtrString;
+    let gtrString;
+
     switch (entryData.value) {
       case 'e':
         gtrString = '1ª corda';
