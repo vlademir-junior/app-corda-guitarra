@@ -2,30 +2,235 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GtrString Studio — Afinação & Utilitários de Guitarra</title>
+    <!-- Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <title>App GtrString</title>
   </head>
-  <body>
-    <button id="darkModeButton">Dark/Light 🌓</button>
-    <header>
-      <h1>Qual é a corda???</h1>
-    </header>
-    <main>
-      <section>
-        <h1>Coloque a letra respectiva à corda e obtenha o resultado!</h1>
-        <span>Coloque <em><strong>aqui</strong></em> a letra respectiva.</span>
-        <input id="entryData" type="text">
-      </section>
-      <section>
-        <span>A sua corda é a:</span>
-        <output id="gtrString" type="text"></output>
-      </section>
-    </main>
-    <footer>
-      <p><em>Todos os direitos reservados,</em> Vlademir Júnior &COPY; - 05/2023</p>
-    </footer>
+  <body class="dark-mode">
+    <div class="app-container">
+      <!-- HEADER -->
+      <header class="app-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"/>
+              <circle cx="12" cy="12" r="10"/>
+            </svg>
+          </div>
+          <div>
+            <h1>GtrString <span class="badge">Studio</span></h1>
+            <p class="subtitle">Guia de Cordas, Afinador & Metrônomo Interativo</p>
+          </div>
+        </div>
+
+        <button id="darkModeButton" class="theme-toggle" aria-label="Alternar tema">
+          <span class="theme-icon light-icon">☀️</span>
+          <span class="theme-icon dark-icon">🌙</span>
+          <span class="theme-text">Tema</span>
+        </button>
+      </header>
+
+      <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- TOP SECTION: TUNING & QUICK LOOKUP -->
+        <div class="grid-top">
+          <!-- TUNING SELECTOR & SEARCH -->
+          <section class="card lookup-card">
+            <div class="card-header">
+              <h2>🔍 Qual é a corda?</h2>
+              <p>Digite a nota ou selecione para identificar a corda na afinação</p>
+            </div>
+
+            <!-- Tuning Presets -->
+            <div class="tuning-selector-group">
+              <label for="tuningSelect"><strong>Afinação:</strong></label>
+              <select id="tuningSelect" class="custom-select">
+                <option value="standard" selected>Padrão (E A D G B e)</option>
+                <option value="dropD">Drop D (D A D G B e)</option>
+                <option value="halfStep">Meio Tom Abaixo (D# G# C# F# A# d#)</option>
+                <option value="openD">Open D (D A D F# A d)</option>
+              </select>
+            </div>
+
+            <!-- Quick Note Buttons -->
+            <div class="quick-notes-label">Notas Rápidas:</div>
+            <div class="quick-notes-grid" id="quickNotesGrid">
+              <!-- Dynamically populated or static standard buttons -->
+              <button class="note-chip" data-note="e">1ª e</button>
+              <button class="note-chip" data-note="b">2ª B</button>
+              <button class="note-chip" data-note="g">3ª G</button>
+              <button class="note-chip" data-note="d">4ª D</button>
+              <button class="note-chip" data-note="a">5ª A</button>
+              <button class="note-chip" data-note="E">6ª E</button>
+            </div>
+
+            <!-- Input Box -->
+            <div class="input-wrapper">
+              <label for="entryData">Ou digite a letra da nota:</label>
+              <div class="input-field-group">
+                <input id="entryData" type="text" maxlength="3" placeholder="Ex: e, B, G..." autocomplete="off">
+                <button id="clearInputBtn" class="btn-clear" aria-label="Limpar entrada">✕</button>
+              </div>
+            </div>
+
+            <!-- Output Display -->
+            <div class="result-box">
+              <span class="result-label">Resultado:</span>
+              <div id="gtrString" class="result-value">Selecione ou digite uma nota</div>
+              <div id="stringDetails" class="string-details">
+                <span id="stringFreq" class="detail-badge">-- Hz</span>
+                <span id="stringPosition" class="detail-badge">Aguardando entrada</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- METRONOME UTILITY -->
+          <section class="card metronome-card">
+            <div class="card-header">
+              <h2>⏱️ Metrônomo</h2>
+              <p>Pratique no ritmo certo com precisão web audio</p>
+            </div>
+
+            <div class="metronome-display">
+              <span id="bpmDisplay" class="bpm-number">120</span>
+              <span class="bpm-unit">BPM</span>
+            </div>
+
+            <!-- Visual Beat Pulse -->
+            <div class="beat-dots" id="beatDots">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+
+            <!-- Slider and Controls -->
+            <div class="metronome-controls">
+              <input type="range" id="bpmSlider" min="40" max="220" value="120" class="bpm-range">
+
+              <div class="bpm-buttons">
+                <button id="bpmSub5" class="btn-step">-5</button>
+                <button id="bpmSub1" class="btn-step">-1</button>
+                <button id="bpmAdd1" class="btn-step">+1</button>
+                <button id="bpmAdd5" class="btn-step">+5</button>
+              </div>
+
+              <div class="metronome-actions">
+                <button id="toggleMetronome" class="btn-primary btn-metronome">
+                  <span id="metronomeIcon">▶</span> <span id="metronomeText">Iniciar</span>
+                </button>
+                <button id="tapTempoBtn" class="btn-secondary">Tap Tempo</button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- GUITAR FRETBOARD / INTERACTIVE STRINGS -->
+        <section class="card fretboard-card">
+          <div class="card-header fretboard-header">
+            <div>
+              <h2>🎸 Braço da Guitarra & Som Real</h2>
+              <p>Clique nas cordas para ouvir o tom exato e visualizar a afinação</p>
+            </div>
+            <button id="playAllStringsBtn" class="btn-secondary btn-sm">
+              🎵 Tocar Acorde (Todas)
+            </button>
+          </div>
+
+          <!-- Interactive Fretboard Visualizer -->
+          <div class="fretboard" id="fretboard">
+            <div class="fretboard-nut"></div>
+
+            <!-- String 1 (Thinnest - e) to String 6 (Thickest - E) -->
+            <div class="guitar-string-row" data-string-index="1">
+              <button class="string-play-btn" data-string="1" aria-label="Tocar 1ª corda">▶</button>
+              <div class="string-info">
+                <span class="string-num">1ª</span>
+                <span class="string-note" id="note-string-1">e</span>
+              </div>
+              <div class="string-line-container">
+                <div class="string-line gauge-1" id="line-string-1"></div>
+              </div>
+              <span class="string-freq" id="freq-string-1">329.6 Hz</span>
+            </div>
+
+            <div class="guitar-string-row" data-string-index="2">
+              <button class="string-play-btn" data-string="2" aria-label="Tocar 2ª corda">▶</button>
+              <div class="string-info">
+                <span class="string-num">2ª</span>
+                <span class="string-note" id="note-string-2">B</span>
+              </div>
+              <div class="string-line-container">
+                <div class="string-line gauge-2" id="line-string-2"></div>
+              </div>
+              <span class="string-freq" id="freq-string-2">246.9 Hz</span>
+            </div>
+
+            <div class="guitar-string-row" data-string-index="3">
+              <button class="string-play-btn" data-string="3" aria-label="Tocar 3ª corda">▶</button>
+              <div class="string-info">
+                <span class="string-num">3ª</span>
+                <span class="string-note" id="note-string-3">G</span>
+              </div>
+              <div class="string-line-container">
+                <div class="string-line gauge-3" id="line-string-3"></div>
+              </div>
+              <span class="string-freq" id="freq-string-3">196.0 Hz</span>
+            </div>
+
+            <div class="guitar-string-row" data-string-index="4">
+              <button class="string-play-btn" data-string="4" aria-label="Tocar 4ª corda">▶</button>
+              <div class="string-info">
+                <span class="string-num">4ª</span>
+                <span class="string-note" id="note-string-4">D</span>
+              </div>
+              <div class="string-line-container">
+                <div class="string-line gauge-4" id="line-string-4"></div>
+              </div>
+              <span class="string-freq" id="freq-string-4">146.8 Hz</span>
+            </div>
+
+            <div class="guitar-string-row" data-string-index="5">
+              <button class="string-play-btn" data-string="5" aria-label="Tocar 5ª corda">▶</button>
+              <div class="string-info">
+                <span class="string-num">5ª</span>
+                <span class="string-note" id="note-string-5">A</span>
+              </div>
+              <div class="string-line-container">
+                <div class="string-line gauge-5" id="line-string-5"></div>
+              </div>
+              <span class="string-freq" id="freq-string-5">110.0 Hz</span>
+            </div>
+
+            <div class="guitar-string-row" data-string-index="6">
+              <button class="string-play-btn" data-string="6" aria-label="Tocar 6ª corda">▶</button>
+              <div class="string-info">
+                <span class="string-num">6ª</span>
+                <span class="string-note" id="note-string-6">E</span>
+              </div>
+              <div class="string-line-container">
+                <div class="string-line gauge-6" id="line-string-6"></div>
+              </div>
+              <span class="string-freq" id="freq-string-6">82.4 Hz</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="app-footer">
+        <p>GtrString Studio — Desenvolvido com ❤️ para músicos</p>
+        <p class="copyright">
+          <span>&copy; Vlademir Júnior</span> &bull;
+          <span id="footerYear">2025</span> &bull; Todos os direitos reservados
+        </p>
+      </footer>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
